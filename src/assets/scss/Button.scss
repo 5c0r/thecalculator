@@ -1,0 +1,22 @@
+.calculator-button {
+    background-color: #131313;
+    color: white;
+    border: 2px solid grey;
+    width: 23vw;
+    height: 10vh;
+    font-size: 2em;
+    padding: 1em;
+    margin: 1px;
+    &.number {
+        background-color: #060606;
+    }
+    &.operator {
+        background-color: #131313;
+        &:hover {
+            background-color: #0077D7;
+        }
+    }
+    &:hover {
+        background-color: grey;
+    }
+}

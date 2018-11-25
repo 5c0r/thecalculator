@@ -20,7 +20,7 @@
         ],
         "quotemark": [
             true,
-            "double"
+            "single"
         ],
         "semicolon": [
             true,
@@ -97,5 +97,6 @@
             "check-separator",
             "check-type"
         ]
-    }
+    },
+    "extends": "tslint:recommended"
 }

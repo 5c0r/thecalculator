@@ -11,6 +11,9 @@
     "include": [
         "./src/**/*"
     ],
+    "exclude": [
+        "./server"
+    ],
     "awesomeTypescriptLoaderOptions": {
         "reportFiles": [
             "./src/**/*"

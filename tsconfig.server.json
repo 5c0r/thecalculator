@@ -1,0 +1,28 @@
+{
+    // Should have use extends
+    "compilerOptions": {
+        "outDir": "dist-server",
+        "sourceMap": true,
+        "noImplicitAny": false,
+        "module": "commonjs",
+        "target": "es6",
+        "emitDecoratorMetadata": true,
+        "lib": [
+            "es5",
+            "es6",
+            "es7"
+        ],
+        "moduleResolution": "node",
+        "experimentalDecorators": true
+    },
+    "files": [
+        "./server/app.ts"
+    ],
+    "include": [
+        "./server/**/*.ts"
+    ],
+    "exclude": [
+        "./src",
+        "node_modules",
+    ]
+}

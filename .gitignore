@@ -1,5 +1,6 @@
 .idea/
 dist/
+dist-server/
 node_modules/
 src/**/*.jsx
 tests/__coverage__/

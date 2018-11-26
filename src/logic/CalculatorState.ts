@@ -1,6 +1,6 @@
 import { ButtonLabels } from "./ButtonLabels";
 
-import * as Big from 'big.js';
+const Big = require('big.js');
 
 // Most of the functionality quite inspired from here
 export class CalculatorState {

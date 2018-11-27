@@ -65,6 +65,7 @@ export class CalculatorState {
         switch (button) {
             case ButtonLabels.Negate: {
                 // TODO: Maybe users wants to negate the result then continue calculation
+                // TODO: Checkwhether state users was in , check if operator was there then decide
                 const numberToNegate = this.total || this.current;
                 if (numberToNegate === null || numberToNegate === "0") return;
 

@@ -9,7 +9,7 @@ describe("Calculator state", () => {
         state = new CalculatorState();
     })
 
-    it("should work", () => {
+    test("should work", () => {
         expect(state).toBeTruthy();
 
         expect(state.current).toBeNull();
@@ -18,7 +18,7 @@ describe("Calculator state", () => {
         expect(state.total).toBeNull();
     });
 
-    it("can do some calculation", () =>{
+    test("can do some calculation", () =>{
         expect(state).toBeTruthy();
 
         expect(state.calc("10","20",ButtonLabels.Add)).toEqual(Big(30));

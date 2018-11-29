@@ -4,31 +4,16 @@
 2. `yarn install` (or `npm install` for npm)
 
 ## Usage
-**UI Development only**
 
-`yarn run start-dev`
+1. `yarn run build` to build both UI and Server-side
+2. There should be both `dist` and `dist-server` folder as built files
+3. `node .\dist-server\app.js` to run the sample
 
-* Build app continuously (HMR enabled)
-* App served @ `http://localhost:8080`
+## Caution
+- `robot.json` should not be used for evil.
 
-**Production**
-
-`yarn run start-prod`
-
-* Build app once (HMR disabled)
-* App served @ `http://localhost:3000`
-
----
-
-**All commands**
-
-Command | Description
---- | ---
-`yarn run start-dev` | Build app continuously (HMR enabled) and serve @ `http://localhost:8080`
-`yarn run start-prod` | Build app once (HMR disabled) and serve @ `http://localhost:3000`
-`yarn run build` | Build app to `/dist/`
-`yarn run test` | Run tests
-`yarn run lint` | Run Typescript linter
-`yarn run start` | (alias of `yarn run start-dev`)
-
-**Note**: replace `yarn` with `npm` if you use npm.
+## References 
+- Google Spreadsheet API v4 [https://developers.google.com/sheets/api/]
+- Google Drive API v3 [https://developers.google.com/drive/]
+- Some React calculator examples , some examples with `eval` as well
+ 

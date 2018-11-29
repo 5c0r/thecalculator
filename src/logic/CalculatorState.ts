@@ -3,11 +3,17 @@ import { number } from "prop-types";
 
 const Big = require('big.js');
 
+export class CalculationHistory {
+    Calculation: string;
+    Result: string;
+    Timestamp: string;
+}
+
 // Most of the functionality quite inspired from here
 export class CalculatorState {
 
     // History , or most recent calculation ?! 
-    history: any[] = [];
+    history: CalculationHistory[] = [];
 
     calculation: string = '';
 
@@ -71,6 +77,24 @@ export class CalculatorState {
 
     onSpecialOperator(button: ButtonLabels): void {
         switch (button) {
+            case ButtonLabels.Delete: {
+                const numberToDelete = this.operator !== null ? this.current : (this.total || this.current);
+
+                let deleteNumber = numberToDelete === "0" ? "0"
+                    : numberToDelete.substring(0, numberToDelete.length - 1);
+
+                if (deleteNumber === "-") deleteNumber = "0";
+
+                if (this.operator) {
+                    if (this.current) this.current = deleteNumber;
+                }
+                else {
+                    if (this.current) this.current = deleteNumber;
+                    else if (this.total) this.total = deleteNumber;
+                }
+
+                break;
+            }
             case ButtonLabels.Negate: {
                 // TODO: Maybe users wants to negate the result then continue calculation
                 // TODO: Checkwhether state users was in , check if operator was there then decide

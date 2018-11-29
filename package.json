@@ -15,14 +15,15 @@
   "author": "Tri Nguyen",
   "license": "MIT",
   "scripts": {
-    "build": "yarn run clean-dist && webpack -p --config=configs/webpack/prod.js",
+    "build": "yarn run build-ui && yarn run build-server",
+    "build-ui": "yarn run clean-dist && webpack -p --config=configs/webpack/prod.js",
     "clean-dist": "rimraf dist",
     "clean-server-dist": "rimraf dist-server",
     "lint": "tslint './src/**/*.ts*' --format stylish --force",
     "start": "yarn run start-dev",
     "start-dev": "webpack-dev-server --config=configs/webpack/dev.js",
     "start-prod": "yarn run build && node express.js",
-    "build-server" : "yarn run clean-server-dist && tsc -p ./tsconfig.server.json",
+    "build-server": "yarn run clean-server-dist && tsc -p ./tsconfig.server.json",
     "test": "jest --watch --coverage --config=configs/jest.json"
   },
   "devDependencies": {
@@ -67,5 +68,7 @@
     "webpack-dev-server": "^3.1.10",
     "webpack-merge": "^4.1.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "sweetalert2": "^7.29.2"
+  }
 }

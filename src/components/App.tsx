@@ -6,23 +6,27 @@ import { ButtonPanel } from "./ButtonPanel";
 import { CalculatorState } from "../logic/CalculatorState";
 import { ButtonLabels } from "../logic/ButtonLabels";
 
+import swal from 'sweetalert2';
+
 export interface AppProps {
 
 }
 
 export interface AppState {
     calculator: CalculatorState;
+    publishing: boolean;
 }
 
 export default class App extends React.Component<AppProps, AppState> {
     constructor(props) {
         super(props);
         this.state = {
+            publishing: false,
             calculator: new CalculatorState()
         }
     }
 
-    handleClick = (button: string) => {
+    handleClick = async (button: string) => {
         // TODO: Move this to CalculatorState ? Then we can basically test it
         switch (button) {
             case ButtonLabels.C: { this.state.calculator.resetAll(); break; }
@@ -44,17 +48,6 @@ export default class App extends React.Component<AppProps, AppState> {
             }
             case ButtonLabels.Result: {
                 this.state.calculator.calculate(true);
-                console.log('TODO: Publish result here', this.state.calculator.history)
-                fetch('/createsheet', {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json; charset=utf-8",
-                    },
-                    body: JSON.stringify(this.state.calculator.history),
-                }).then(result => {
-                    console.log('woohooo', result);
-                    this.state.calculator.history = [];
-                })
                 break;
             }
             // Should be a button
@@ -70,22 +63,64 @@ export default class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    getCalculation = () => {
-        return this.state.calculator.displayString;
+    handlePublishClick = async () => {
+        this.setState({
+            ...this.state,
+            publishing: true
+        })
+        const result = await fetch('/createsheet', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+            },
+            body: JSON.stringify(this.state.calculator.history),
+        })
+
+        if (result.ok) {
+            const spreadSheetUrl = await result.json();
+            swal({
+                title: 'Success !',
+                html: `<p>Your calculation result:</p> 
+                    <a href="${spreadSheetUrl}" target="blank"> Google Spreadsheet</a>`,
+                type: 'success'
+            })
+            this.state.calculator.history = [];
+        } else {
+            swal({
+                title: 'Failure !',
+                text: `Something wrong ! Please try again !`,
+                type: 'error'
+            })
+        }
+
+        this.setState({
+            ...this.state,
+            publishing: false
+        });
     }
+
 
     render() {
         const currentNum = this.state.calculator.current || this.state.calculator.total || '0';
+        const { history, displayString, operator } = this.state.calculator;
+        const { publishing } = this.state;
         return (
             <div className="app">
-                <UpperDisplay calculation={this.getCalculation()}
+                <UpperDisplay calculation={displayString}
                 />
                 <Display currentText={currentNum}
                 />
                 <ButtonPanel
-                    currentOperator={this.state.calculator.operator}
+                    currentOperator={operator}
                     handleClick={this.handleClick.bind(this)}
                 />
+                <p> Your previous calculation are listed here : </p>
+                <ul>
+                    {history.map((h, i) => {
+                        return <li> {h.Calculation} = {h.Result}</li>
+                    })}
+                </ul>
+                <button disabled={publishing} type="button" onClick={this.handlePublishClick.bind(this)} >Publish result to Google Drive</button>
             </div>
         );
     }

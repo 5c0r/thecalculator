@@ -21,7 +21,12 @@ export class GoogleInstance {
     // public readonly googleInstance: GoogleApis;
 
     constructor() {
-        google.auth.getClient({
+        this.authenticate();
+    }
+
+    // This is called explicitly for unit tests only
+    public authenticate(): Promise<any> {
+        return google.auth.getClient({
             keyFilename: file,
             scopes: scopes
         }).then((val) => {

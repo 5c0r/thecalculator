@@ -1,6 +1,7 @@
 import { drive_v3, google } from 'googleapis';
 import { Service } from 'typedi';
 import { GoogleInstance } from './google-main.service';
+import { AxiosPromise } from 'axios';
 
 
 @Service()
@@ -14,8 +15,8 @@ export class GoogleDriveService {
         }, google);
     }
 
-    async setFilePermission(fileId: string, type: any = { type: "anyone", role: "reader" }) {
-        await this.driveService.permissions.create({
+    setFilePermission(fileId: string, type: any = { type: "anyone", role: "reader" }) : AxiosPromise<drive_v3.Schema$Permission> {
+        return this.driveService.permissions.create({
             fileId: fileId,
             requestBody: type
         })

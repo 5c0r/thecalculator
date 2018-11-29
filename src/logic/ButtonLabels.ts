@@ -4,7 +4,7 @@ export enum ButtonLabels {
     Delete = "Del",
     Negate = "+/-",
     Divide = "/",
-    Multiple = "X",
+    Multiple = "x",
     Add = "+",
     Substract = "-",
     Result = "=",

@@ -18,14 +18,24 @@ describe("Calculator state", () => {
         expect(state.total).toBeNull();
     });
 
-    test("can do some calculation", () =>{
+    test("can do some calculation", () => {
         expect(state).toBeTruthy();
 
-        expect(state.calc("10","20",ButtonLabels.Add)).toEqual(Big(30));
-        expect(state.calc("10","20",ButtonLabels.Substract)).toEqual(Big(-10));
-        expect(state.calc("10","20",ButtonLabels.Multiple)).toEqual(Big(200));
-        expect(state.calc("10","20",ButtonLabels.Divide)).toEqual(Big(0.5));
+        expect(state.calc("10", "20", ButtonLabels.Add)).toEqual(Big(30));
+        expect(state.calc("10", "20", ButtonLabels.Substract)).toEqual(Big(-10));
+        expect(state.calc("10", "20", ButtonLabels.Multiple)).toEqual(Big(200));
+        expect(state.calc("10", "20", ButtonLabels.Divide)).toEqual(Big(0.5));
     });
+
+    test("can do some trivial number click", () => {
+        state.addNumber("1");
+        state.addNumber("2");
+
+        expect(state.CurrentNumber).toEqual(Big(12));
+
+        // state.onSpecialOperator(ButtonLabels.Negate);
+        // expect(state.CurrentNumber).toBe(Big(-12));
+    })
 
 });
 

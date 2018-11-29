@@ -29,10 +29,8 @@ export default class App extends React.Component<AppProps, AppState> {
             // TODO
             case ButtonLabels.CE: { this.state.calculator.resetCurrent(); break; }
             // case ButtonLabels.Negate: { this.state.calculator.on}
-            case ButtonLabels.Delete: {
-                // TODO
-                break;
-            }
+            case ButtonLabels.Delete:
+            case ButtonLabels.Decimal:
             case ButtonLabels.Negate: {
                 this.state.calculator.onSpecialOperator(button);
                 break;
@@ -46,6 +44,17 @@ export default class App extends React.Component<AppProps, AppState> {
             }
             case ButtonLabels.Result: {
                 this.state.calculator.calculate(true);
+                console.log('TODO: Publish result here', this.state.calculator.history)
+                fetch('/createsheet', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json; charset=utf-8",
+                    },
+                    body: JSON.stringify(this.state.calculator.history),
+                }).then(result => {
+                    console.log('woohooo', result);
+                    this.state.calculator.history = [];
+                })
                 break;
             }
             // Should be a button

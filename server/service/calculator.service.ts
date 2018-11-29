@@ -10,29 +10,23 @@ export class CalculatorService {
 
     }
 
-    // This is quite an expensive operation
+    // This is quite an expensive operation, but read/ write / read 
     public async createSheet(title: string, data: any[], shared: boolean = true): Promise<string> {
         const sheetResponse = await this.sheetSvc.createGoogleSheet(title);
         const { spreadsheetId, spreadsheetUrl } = sheetResponse.data;
 
-        // TODO: Insert data here
-        const testData = [
-            ['Calculation', 'Result', 'Timestamp'],
-            [' 1+ 1', 2, new Date().toDateString()],
-            [' 1+ 1', 2, new Date().toDateString()],
-            [' 1+ 1', 2, new Date().toDateString()]
-        ]
-        const appendResponse = await this.sheetSvc.insertDataToSheet(spreadsheetId, testData);
+        const processedData = this.preProcessData(data);
+
+        const appendResponse = await this.sheetSvc.insertDataToSheet(spreadsheetId, processedData);
         const drivePermissionResponse = await this.driveSvc.setFilePermission(spreadsheetId);
 
-        console.log('appendReesponse', appendResponse);
 
         return spreadsheetUrl;
     }
 
     public async addRowToSheet(sheetId: string, row: any): Promise<void> {
         // TODO: Insert data here
-        
+
         const appendResponse = await this.sheetSvc.insertDataToSheet(sheetId, [row]);
         console.log('appendReesponse', appendResponse);
 
@@ -42,5 +36,15 @@ export class CalculatorService {
 
     }
 
+    private preProcessData(data: any[]): any[] {
+        const headerRow = [
+            ['Calculation', 'Result', 'Timestamp']
+        ];
+        const newData = data.map(value => {
+            return [value.Calculation, value.Result, value.Timestamp]
+        });
+
+        return headerRow.concat(newData);
+    }
 
 } 

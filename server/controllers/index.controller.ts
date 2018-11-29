@@ -1,9 +1,9 @@
-import { Controller, Req, Res, Get, Render, Body, BodyParam, Post, Param, OnUndefined } from 'routing-controllers';
+import { Body, Post, Param, OnUndefined, JsonController } from 'routing-controllers';
 import { Service } from 'typedi';
 import { CalculatorService } from '../service/calculator.service';
 
 @Service()
-@Controller()
+@JsonController()
 export class IndexController {
 
     constructor(readonly calculatorSvc: CalculatorService) {
@@ -13,7 +13,8 @@ export class IndexController {
     @Post("/createsheet")
     @OnUndefined(200)
     async createSheetWithAllResult(@Body() calculationData: any[]) {
-        var spreadSheetUrl = await this.calculatorSvc.createSheet("Testti", []);
+        console.log('createSheet', calculationData);
+        var spreadSheetUrl = await this.calculatorSvc.createSheet("Testti", calculationData);
 
         return spreadSheetUrl;
     }

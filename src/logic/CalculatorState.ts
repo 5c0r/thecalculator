@@ -1,9 +1,13 @@
 import { ButtonLabels } from "./ButtonLabels";
+import { number } from "prop-types";
 
 const Big = require('big.js');
 
 // Most of the functionality quite inspired from here
 export class CalculatorState {
+
+    // History , or most recent calculation ?! 
+    history: any[] = [];
 
     calculation: string = '';
 
@@ -19,20 +23,24 @@ export class CalculatorState {
         return this.current !== null ? Big(this.current) : 0;
     }
 
+    // TODO: Refactor ,urg
     public addNumber(number: any): void {
-        if (this.CurrentNumber === 0 && (number === "0" || number === 0)) return;
+        if (this.current === "0" && (number === "0" || number === 0)) return;
 
         if (this.operator) {
             if (this.current) {
-                this.current = this.current.toString() + number.toString();
+                if (this.current === "0") this.current = number.toString();
+                else this.current = this.current.toString() + number.toString();
             } else {
-                this.current = number;
+                if (this.current === "0") this.current = number.toString();
+                else this.current = number.toString();
             }
 
         }
         // No operator 
         else if (this.current) {
-            this.current = this.current.toString() + number.toString();
+            if (this.current === "0") this.current = number.toString();
+            else this.current = this.current.toString() + number.toString();
         } else {
             this.current = number.toString();
         }
@@ -58,7 +66,7 @@ export class CalculatorState {
     }
 
     resetCurrent(): void {
-        this.current = null;
+        this.current = "0";
     }
 
     onSpecialOperator(button: ButtonLabels): void {
@@ -66,15 +74,35 @@ export class CalculatorState {
             case ButtonLabels.Negate: {
                 // TODO: Maybe users wants to negate the result then continue calculation
                 // TODO: Checkwhether state users was in , check if operator was there then decide
-                const numberToNegate = this.total || this.current;
+                const numberToNegate = this.operator !== null ? this.current : (this.total || this.current);
                 if (numberToNegate === null || numberToNegate === "0") return;
 
                 const negatedNumber = numberToNegate.indexOf("-") === 0
                     ? numberToNegate.substr(1, numberToNegate.length) : ("-" + numberToNegate);
 
-                if (this.current) this.current = negatedNumber;
-                else if (this.total) this.total = negatedNumber;
+                if (this.operator) {
+                    if (this.current) this.current = negatedNumber;
+                }
+                else {
+                    if (this.current) this.current = negatedNumber;
+                    else if (this.total) this.total = negatedNumber;
+                }
+                break;
+            }
+            case ButtonLabels.Decimal: {
+                const numberToDecimal = (this.operator !== null ? this.current : (this.total || this.current)) || "0";
 
+                const decimalSignIndex = numberToDecimal.indexOf(".");
+                if (decimalSignIndex > -1) return;
+                const decimalNumber = numberToDecimal + ".";
+
+                if (this.operator) {
+                    this.current = decimalNumber;
+                }
+                else {
+                    if (this.current || this.CurrentNumber === 0) this.current = decimalNumber;
+                    else if (this.total) this.total = decimalNumber;
+                }
                 break;
             }
         }
@@ -117,10 +145,15 @@ export class CalculatorState {
 
         result = this.calc(this.total, this.current, this.operator);
 
-        console.log('RESULT', result.toString());
         this.total = result.toString();
 
         if (publishResult) {
+            this.history.push({
+                Calculation: this.calculation,
+                Result: this.total,
+                Timestamp: new Date().toISOString()
+            });
+
             this.operator = null;
             this.current = null;
             this.calculation = '';
@@ -129,7 +162,7 @@ export class CalculatorState {
 
     resetAll() {
         this.calculation = '';
-        this.current = null;
+        this.current = "0";
         this.total = null;
         this.operator = null;
     }

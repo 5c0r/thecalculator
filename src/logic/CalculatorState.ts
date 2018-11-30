@@ -29,27 +29,34 @@ export class CalculatorState {
         return this.current !== null ? Big(this.current) : 0;
     }
 
-    // TODO: Refactor ,urg
-    public addNumber(number: any): void {
+    public onNumberClick(number: any): void {
         if (this.current === "0" && (number === "0" || number === 0)) return;
 
         if (this.operator) {
             if (this.current) {
-                if (this.current === "0") this.current = number.toString();
-                else this.current = this.current.toString() + number.toString();
+                if (this.current === "0") this.setNumber(number);
+                else this.addNumber(number);
             } else {
-                if (this.current === "0") this.current = number.toString();
-                else this.current = number.toString();
+                if (this.current === "0") this.setNumber(number);
+                else this.setNumber(number);
             }
 
         }
         // No operator 
         else if (this.current) {
-            if (this.current === "0") this.current = number.toString();
-            else this.current = this.current.toString() + number.toString();
+            if (this.current === "0") this.setNumber(number);
+            else this.addNumber(number);
         } else {
-            this.current = number.toString();
+            this.setNumber(number);
         }
+    }
+
+    private setNumber(number: any): void {
+        this.current = number.toString();
+    }
+
+    private addNumber(number: any): void {
+        this.current = this.current.toString() + number.toString();
     }
 
     setOperator(operator: string): void {
@@ -85,46 +92,48 @@ export class CalculatorState {
 
                 if (deleteNumber === "-") deleteNumber = "0";
 
+                // TODO: This can be refactored
                 if (this.operator) {
-                    if (this.current) this.current = deleteNumber;
+                    if (this.current) this.setNumber(deleteNumber);
                 }
                 else {
-                    if (this.current) this.current = deleteNumber;
+                    if (this.current) this.setNumber(deleteNumber);
                     else if (this.total) this.total = deleteNumber;
                 }
 
                 break;
             }
             case ButtonLabels.Negate: {
-                // TODO: Maybe users wants to negate the result then continue calculation
-                // TODO: Checkwhether state users was in , check if operator was there then decide
+                // TODO: Maybe users wants to negate the result then continue calculation - Done
                 const numberToNegate = this.operator !== null ? this.current : (this.total || this.current);
                 if (numberToNegate === null || numberToNegate === "0") return;
 
                 const negatedNumber = numberToNegate.indexOf("-") === 0
                     ? numberToNegate.substr(1, numberToNegate.length) : ("-" + numberToNegate);
 
+                // TODO: This ca nbe refactored
                 if (this.operator) {
-                    if (this.current) this.current = negatedNumber;
+                    if (this.current) this.setNumber(negatedNumber);
                 }
                 else {
-                    if (this.current) this.current = negatedNumber;
+                    if (this.current) this.setNumber(negatedNumber);
                     else if (this.total) this.total = negatedNumber;
                 }
                 break;
             }
             case ButtonLabels.Decimal: {
-                const numberToDecimal = (this.operator !== null ? this.current : (this.total || this.current)) || "0";
+                const numberToDecimal = (this.operator !== null ? this.current : (this.current || this.total)) || "0";
 
                 const decimalSignIndex = numberToDecimal.indexOf(".");
                 if (decimalSignIndex > -1) return;
                 const decimalNumber = numberToDecimal + ".";
 
+                // TODO: This is likely different from above
                 if (this.operator) {
-                    this.current = decimalNumber;
+                    this.setNumber(decimalNumber);
                 }
                 else {
-                    if (this.current || this.CurrentNumber === 0) this.current = decimalNumber;
+                    if (this.current || this.CurrentNumber === 0) this.setNumber(decimalNumber);
                     else if (this.total) this.total = decimalNumber;
                 }
                 break;

@@ -1,6 +1,6 @@
 import { CalculatorState } from "./../src/logic/CalculatorState";
 import { ButtonLabels } from "../src/logic/ButtonLabels";
-import * as Big from 'big.js';
+const Big = require('big.js');
 
 describe("Calculator state", () => {
     let state: CalculatorState = null;
@@ -21,17 +21,33 @@ describe("Calculator state", () => {
     test("can do some calculation", () => {
         expect(state).toBeTruthy();
 
-        expect(state.calc("10", "20", ButtonLabels.Add)).toEqual(Big(30));
-        expect(state.calc("10", "20", ButtonLabels.Substract)).toEqual(Big(-10));
-        expect(state.calc("10", "20", ButtonLabels.Multiple)).toEqual(Big(200));
-        expect(state.calc("10", "20", ButtonLabels.Divide)).toEqual(Big(0.5));
+        expect(state.calc("10", "20", ButtonLabels.Add).toString()).toBe(Big(30).toString());
+        expect(state.calc("10", "20", ButtonLabels.Substract).toString()).toBe(Big(-10).toString());
+        expect(state.calc("10", "20", ButtonLabels.Multiple).toString()).toBe(Big(200).toString());
+        expect(state.calc("10", "20", ButtonLabels.Divide).toString()).toBe(Big(0.5).toString());
     });
 
     test("can do some trivial number click", () => {
-        state.addNumber("1");
-        state.addNumber("2");
+        state.onNumberClick("1");
+        state.onNumberClick("2");
 
-        expect(state.CurrentNumber).toEqual(Big(12));
+        expect(state.CurrentNumber.toString()).toEqual(Big(12).toString());
+    });
+
+
+    test("can do decimal number click", () => {
+        state.onNumberClick("1");
+        state.onSpecialOperator(ButtonLabels.Decimal);
+        state.onNumberClick("2");
+
+        expect(state.CurrentNumber.valueOf()).toBe(Big(1.2).valueOf());
+
+        state.resetAll();
+
+        state.onSpecialOperator(ButtonLabels.Decimal);
+        state.onNumberClick("2");
+
+        expect(state.CurrentNumber.valueOf()).toBe(Big(0.2).valueOf());
 
         // state.onSpecialOperator(ButtonLabels.Negate);
         // expect(state.CurrentNumber).toBe(Big(-12));

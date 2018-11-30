@@ -52,7 +52,7 @@ export default class App extends React.Component<AppProps, AppState> {
             }
             // Should be a button
             default: {
-                this.state.calculator.addNumber(button);
+                this.state.calculator.onNumberClick(button);
                 break;
             }
         }
@@ -104,6 +104,7 @@ export default class App extends React.Component<AppProps, AppState> {
         const currentNum = this.state.calculator.current || this.state.calculator.total || '0';
         const { history, displayString, operator } = this.state.calculator;
         const { publishing } = this.state;
+        
         return (
             <div className="app">
                 <UpperDisplay calculation={displayString}
@@ -117,7 +118,7 @@ export default class App extends React.Component<AppProps, AppState> {
                 <p> Your previous calculation are listed here : </p>
                 <ul>
                     {history.map((h, i) => {
-                        return <li> {h.Calculation} = {h.Result}</li>
+                        return <li key={i}> {h.Calculation} = {h.Result}</li>
                     })}
                 </ul>
                 <button disabled={publishing} type="button" onClick={this.handlePublishClick.bind(this)} >Publish result to Google Drive</button>

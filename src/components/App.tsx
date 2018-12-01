@@ -4,7 +4,6 @@ import { Display } from "./Display";
 import { UpperDisplay } from "./UpperDisplay";
 import { ButtonPanel } from "./ButtonPanel";
 import { CalculatorState } from "../logic/CalculatorState";
-import { ButtonLabels } from "../logic/ButtonLabels";
 
 import swal from 'sweetalert2';
 
@@ -26,40 +25,11 @@ export default class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    handleClick = async (button: string) => {
-        // TODO: Move this to CalculatorState ? Then we can basically test it
-        switch (button) {
-            case ButtonLabels.C: { this.state.calculator.resetAll(); break; }
-            // TODO
-            case ButtonLabels.CE: { this.state.calculator.resetCurrent(); break; }
-            // case ButtonLabels.Negate: { this.state.calculator.on}
-            case ButtonLabels.Delete:
-            case ButtonLabels.Decimal:
-            case ButtonLabels.Negate: {
-                this.state.calculator.onSpecialOperator(button);
-                break;
-            }
-            case ButtonLabels.Add:
-            case ButtonLabels.Multiple:
-            case ButtonLabels.Divide:
-            case ButtonLabels.Substract: {
-                this.state.calculator.setOperator(button);
-                break;
-            }
-            case ButtonLabels.Result: {
-                this.state.calculator.calculate(true);
-                break;
-            }
-            // Should be a button
-            default: {
-                this.state.calculator.onNumberClick(button);
-                break;
-            }
-        }
-
+    handleClick = (button: string) => {
+        const newState = this.state.calculator.clickButton(button);
         this.setState({
             ...this.state,
-            calculator: this.state.calculator
+            calculator: newState
         });
     }
 
@@ -104,7 +74,7 @@ export default class App extends React.Component<AppProps, AppState> {
         const currentNum = this.state.calculator.current || this.state.calculator.total || '0';
         const { history, displayString, operator } = this.state.calculator;
         const { publishing } = this.state;
-        
+
         return (
             <div className="app">
                 <UpperDisplay calculation={displayString}
@@ -115,7 +85,7 @@ export default class App extends React.Component<AppProps, AppState> {
                     currentOperator={operator}
                     handleClick={this.handleClick.bind(this)}
                 />
-                <p> Your previous calculation are listed here : </p>
+                {history.length > 0 ? <p> Your previous calculation are listed here : </p> : null}
                 <ul>
                     {history.map((h, i) => {
                         return <li key={i}> {h.Calculation} = {h.Result}</li>

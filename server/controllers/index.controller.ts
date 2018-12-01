@@ -10,16 +10,16 @@ export class IndexController {
         console.log('calculator service', calculatorSvc);
     }
 
-    @Post("/createsheet")
+    @Post('/createsheet')
     @OnUndefined(200)
     async createSheetWithAllResult(@Body() calculationData: any[]) {
         console.log('createSheet', calculationData);
-        var spreadSheetUrl = await this.calculatorSvc.createSheet("Testti", calculationData);
+        var spreadSheetUrl = await this.calculatorSvc.createSheet('Testti', calculationData);
 
         return spreadSheetUrl;
     }
 
-    @Post("/addrow/:sheetId")
+    @Post('/addrow/:sheetId')
     @OnUndefined(200)
     async addSheetWithNewResult(@Param('sheetId') sheetId: string) {
         await this.calculatorSvc.addRowToSheet(sheetId, ['1+1', 2, new Date().toDateString()]);

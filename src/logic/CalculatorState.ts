@@ -82,6 +82,40 @@ export class CalculatorState {
         this.current = "0";
     }
 
+    clickButton(button: string): CalculatorState {
+        // TODO: Move this to CalculatorState ? Then we can basically test it
+        switch (button) {
+            case ButtonLabels.C: { this.resetAll(); break; }
+            // TODO
+            case ButtonLabels.CE: { this.resetCurrent(); break; }
+            // case ButtonLabels.Negate: { this.on}
+            case ButtonLabels.Delete:
+            case ButtonLabels.Decimal:
+            case ButtonLabels.Negate: {
+                this.onSpecialOperator(button);
+                break;
+            }
+            case ButtonLabels.Add:
+            case ButtonLabels.Multiple:
+            case ButtonLabels.Divide:
+            case ButtonLabels.Substract: {
+                this.setOperator(button);
+                break;
+            }
+            case ButtonLabels.Result: {
+                this.calculate(true);
+                break;
+            }
+            // Should be a button
+            default: {
+                this.onNumberClick(button);
+                break;
+            }
+        }
+
+        return this;
+    }
+
     onSpecialOperator(button: ButtonLabels): void {
         switch (button) {
             case ButtonLabels.Delete: {
@@ -104,8 +138,7 @@ export class CalculatorState {
                 break;
             }
             case ButtonLabels.Negate: {
-                // TODO: Maybe users wants to negate the result then continue calculation - Done
-                const numberToNegate = this.operator !== null ? this.current : (this.total || this.current);
+                const numberToNegate = this.operator !== null ? this.current : (this.current || this.total);
                 if (numberToNegate === null || numberToNegate === "0") return;
 
                 const negatedNumber = numberToNegate.indexOf("-") === 0

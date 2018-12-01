@@ -4,7 +4,7 @@ import * as express from 'express';
 import * as path from 'path';
 
 import { createExpressServer, useContainer } from 'routing-controllers';
-import { Container } from "typedi";
+import { Container } from 'typedi';
 
 useContainer(Container);
 
@@ -17,7 +17,6 @@ const portNumber = 3000;
 // This instance should be now singleton ?
 Container.get(GoogleInstance);
 
-// TODO: Container ?!
 const expressServer: express.Application = createExpressServer({
     controllers: [IndexController]
 });

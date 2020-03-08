@@ -1,7 +1,7 @@
 
 ## Installation
 1. Clone/download repo
-2. `yarn install` . Currently this project only use yarn for consistency
+2. `npm install` . Currently this project only use npm for consistency
 
 ## Usage
 1. `yarn run build` to build both UI and Server-side

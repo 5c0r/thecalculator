@@ -21,6 +21,4 @@ export class GoogleDriveService {
             requestBody: type
         })
     }
-
-    
 }

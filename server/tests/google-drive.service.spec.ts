@@ -30,10 +30,6 @@ describe("Google Drive service test", () => {
         const response = await sut.setFilePermission(spreadsheetId);
 
         expect(response.data.kind).toBe("drive#permission");
-        expect(response.data.role).toBe("reader");
-
-
+        expect(response.data.role).toBe("reader"); 
     })
-
-
 })

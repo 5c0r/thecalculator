@@ -1,7 +1,7 @@
 {
   "name": "the-calculator",
   "version": "0.1.0",
-  "description": "Roima coding challenge",
+  "description": "Somewhere coding challenge",
   "keywords": [
     "react",
     "webpack",
@@ -44,11 +44,11 @@
     "express": "^4.16.4",
     "file-loader": "^2.0.0",
     "google-auth-library": "^2.0.1",
-    "googleapis": "^35.0.0",
+    "googleapis": "^47.0.0",
     "html-webpack-plugin": "^3.2.0",
-    "image-webpack-loader": "^4.5.0",
-    "jest": "^23.6.0",
-    "node-sass": "^4.10.0",
+    "image-webpack-loader": "^6.0.0",
+    "jest": "^25.1.0",
+    "node-sass": "^4.13.1",
     "react": "^16.6.3",
     "react-addons-test-utils": "^15.6.2",
     "react-dom": "^16.6.3",
@@ -62,10 +62,10 @@
     "typedi": "^0.8.0",
     "typescript": "^3.1.6",
     "uglifyjs-webpack-plugin": "^2.0.1",
-    "webpack": "^4.25.1",
+    "webpack": "^4.42.0",
     "webpack-cli": "^3.1.2",
     "webpack-dev-middleware": "^3.4.0",
-    "webpack-dev-server": "^3.1.10",
+    "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
